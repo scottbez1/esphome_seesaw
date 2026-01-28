@@ -128,7 +128,7 @@ bool SeesawDevice::write_register(uint8_t module, uint8_t reg) {
 bool SeesawDevice::read_register(uint8_t module, uint8_t reg, uint8_t *data, size_t len) {
   // Write the address first
   uint8_t addr[2] = {module, reg};
-  auto write_result = this->write(addr, 2, false);  // Don't send stop
+  auto write_result = this->write(addr, 2);
   if (write_result != i2c::ERROR_OK) {
     ESP_LOGE(TAG, "I2C address write failed: module=0x%02X reg=0x%02X error=%d", module, reg, write_result);
     return false;
