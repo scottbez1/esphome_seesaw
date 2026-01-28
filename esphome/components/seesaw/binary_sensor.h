@@ -10,7 +10,6 @@ namespace seesaw {
 enum SeesawGPIOPinMode : uint8_t {
   SEESAW_PIN_MODE_INPUT = 0,
   SEESAW_PIN_MODE_INPUT_PULLUP = 1,
-  SEESAW_PIN_MODE_INPUT_PULLDOWN = 2,
 };
 
 class SeesawGPIOBinarySensor : public binary_sensor::BinarySensor, public Component {

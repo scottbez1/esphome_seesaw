@@ -27,16 +27,6 @@ void SeesawGPIOBinarySensor::setup() {
         return;
       }
       break;
-    case SEESAW_PIN_MODE_INPUT_PULLDOWN:
-      // Seesaw doesn't have a direct pull-down, would need to set differently
-      // For now, treat like regular input
-      ESP_LOGW(TAG, "Pull-down not fully supported, using input mode for pin %d", pin_);
-      if (!parent_->set_gpio_input(pin_mask)) {
-        ESP_LOGE(TAG, "Failed to configure pin %d as input", pin_);
-        this->mark_failed();
-        return;
-      }
-      break;
   }
 
   // Register with parent for updates
@@ -56,9 +46,6 @@ void SeesawGPIOBinarySensor::dump_config() {
       break;
     case SEESAW_PIN_MODE_INPUT_PULLUP:
       mode_str = "INPUT_PULLUP";
-      break;
-    case SEESAW_PIN_MODE_INPUT_PULLDOWN:
-      mode_str = "INPUT_PULLDOWN";
       break;
     default:
       mode_str = "UNKNOWN";
