@@ -1,5 +1,6 @@
 #include "seesaw.h"
 #include "binary_sensor.h"
+#include "sensor.h"
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
 
@@ -32,15 +33,17 @@ void SeesawDevice::setup() {
 }
 
 void SeesawDevice::update() {
-  if (binary_sensors_.empty()) {
-    return;
+  if (!binary_sensors_.empty()) {
+    uint32_t gpio_state;
+    if (read_gpio_bulk(&gpio_state)) {
+      notify_binary_sensors_(gpio_state);
+    } else {
+      ESP_LOGW(TAG, "Failed to read GPIO state");
+    }
   }
 
-  uint32_t gpio_state;
-  if (read_gpio_bulk(&gpio_state)) {
-    notify_binary_sensors_(gpio_state);
-  } else {
-    ESP_LOGW(TAG, "Failed to read GPIO state");
+  for (auto *sensor : encoder_sensors_) {
+    sensor->update_from_parent();
   }
 }
 
@@ -241,6 +244,30 @@ bool SeesawDevice::write_neopixel_buffer(uint16_t offset, const uint8_t *data, s
 
 bool SeesawDevice::show_neopixels() {
   return write_register(SEESAW_NEOPIXEL_BASE, SEESAW_NEOPIXEL_SHOW);
+}
+
+// Encoder helpers
+
+bool SeesawDevice::read_encoder_position(uint8_t encoder, int32_t *position) {
+  uint8_t buf[4];
+  if (!read_register(SEESAW_ENCODER_BASE, SEESAW_ENCODER_POSITION + encoder, buf, 4)) {
+    return false;
+  }
+  // Big-endian signed 32-bit value
+  *position = ((int32_t)buf[0] << 24) | ((int32_t)buf[1] << 16) |
+              ((int32_t)buf[2] << 8) | buf[3];
+  return true;
+}
+
+bool SeesawDevice::read_encoder_delta(uint8_t encoder, int32_t *delta) {
+  uint8_t buf[4];
+  if (!read_register(SEESAW_ENCODER_BASE, SEESAW_ENCODER_DELTA + encoder, buf, 4)) {
+    return false;
+  }
+  // Big-endian signed 32-bit value; reading this register clears it on the device
+  *delta = ((int32_t)buf[0] << 24) | ((int32_t)buf[1] << 16) |
+           ((int32_t)buf[2] << 8) | buf[3];
+  return true;
 }
 
 }  // namespace seesaw

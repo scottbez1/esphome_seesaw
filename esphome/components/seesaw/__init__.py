@@ -5,7 +5,7 @@ from esphome.const import CONF_ID
 
 MULTI_CONF = True
 DEPENDENCIES = ["i2c"]
-AUTO_LOAD = ["binary_sensor", "light"]
+AUTO_LOAD = ["binary_sensor", "light", "sensor"]
 
 CONF_SEESAW_ID = "seesaw_id"
 CONF_SOFTWARE_RESET = "software_reset"

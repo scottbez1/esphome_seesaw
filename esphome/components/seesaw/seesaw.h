@@ -11,6 +11,7 @@ namespace seesaw {
 
 class SeesawGPIOBinarySensor;
 class SeesawNeoPixelLight;
+class SeesawEncoderSensor;
 
 class SeesawDevice : public PollingComponent, public i2c::I2CDevice {
  public:
@@ -24,6 +25,7 @@ class SeesawDevice : public PollingComponent, public i2c::I2CDevice {
   // Child registration
   void register_binary_sensor(SeesawGPIOBinarySensor *sensor) { binary_sensors_.push_back(sensor); }
   void register_neopixel_light(SeesawNeoPixelLight *light) { neopixel_light_ = light; }
+  void register_encoder_sensor(SeesawEncoderSensor *sensor) { encoder_sensors_.push_back(sensor); }
 
   // Core I2C methods (two-byte addressing with read delay)
   bool write_register(uint8_t module, uint8_t reg, const uint8_t *data, size_t len);
@@ -40,6 +42,10 @@ class SeesawDevice : public PollingComponent, public i2c::I2CDevice {
   bool write_neopixel_buffer(uint16_t offset, const uint8_t *data, size_t len);
   bool show_neopixels();
 
+  // Encoder helpers
+  bool read_encoder_position(uint8_t encoder, int32_t *position);
+  bool read_encoder_delta(uint8_t encoder, int32_t *delta);
+
   // Configuration
   void set_software_reset(bool reset) { software_reset_ = reset; }
 
@@ -50,6 +56,7 @@ class SeesawDevice : public PollingComponent, public i2c::I2CDevice {
 
   std::vector<SeesawGPIOBinarySensor *> binary_sensors_;
   SeesawNeoPixelLight *neopixel_light_{nullptr};
+  std::vector<SeesawEncoderSensor *> encoder_sensors_;
   bool software_reset_{true};
   uint8_t hardware_id_{0};
 };

@@ -1,0 +1,43 @@
+esphome:
+  name: rotary-encoder
+  friendly_name: Rotary Encoder
+
+esp32:
+  board: esp32dev
+
+logger:
+
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+
+# Adafruit I2C QT Rotary Encoder with NeoPixel (product 4991)
+# Default I2C address: 0x36
+seesaw:
+  - id: rotary_enc
+    address: 0x36
+    update_interval: 20ms
+
+sensor:
+  - platform: seesaw
+    seesaw_id: rotary_enc
+    name: "Encoder Position"
+    encoder: 0
+    # Reports absolute position as a float; turns clockwise increase the value
+
+binary_sensor:
+  - platform: seesaw
+    seesaw_id: rotary_enc
+    name: "Encoder Button"
+    pin: 24          # Built-in push button on product 4991
+    pin_mode: INPUT_PULLUP
+    inverted: true   # Button is active-low
+
+light:
+  - platform: seesaw
+    seesaw_id: rotary_enc
+    name: "Encoder NeoPixel"
+    num_leds: 1
+    pin: 6           # Built-in NeoPixel on product 4991
+    color_order: GRB

@@ -52,6 +52,14 @@ constexpr uint8_t SEESAW_NEOPIXEL_SHOW = 0x05;
 constexpr uint8_t SEESAW_NEOPIXEL_SPEED_400KHZ = 0x00;
 constexpr uint8_t SEESAW_NEOPIXEL_SPEED_800KHZ = 0x01;
 
+// Encoder Module Registers (SEESAW_ENCODER_BASE)
+// Encoder index is added to the register address to select which encoder
+constexpr uint8_t SEESAW_ENCODER_STATUS = 0x00;
+constexpr uint8_t SEESAW_ENCODER_INTENSET = 0x10;
+constexpr uint8_t SEESAW_ENCODER_INTENCLR = 0x20;
+constexpr uint8_t SEESAW_ENCODER_POSITION = 0x30;
+constexpr uint8_t SEESAW_ENCODER_DELTA = 0x40;
+
 // Hardware IDs
 constexpr uint8_t SEESAW_HW_ID_CODE_SAMD09 = 0x55;
 constexpr uint8_t SEESAW_HW_ID_CODE_TINY806 = 0x84;
@@ -65,6 +73,10 @@ constexpr uint8_t SEESAW_HW_ID_CODE_TINY1617 = 0x89;
 constexpr uint8_t SEESAW_ADDRESS_NEOKEY_1X4 = 0x30;
 constexpr uint8_t SEESAW_ADDRESS_NEOSLIDER = 0x30;
 constexpr uint8_t SEESAW_ADDRESS_ROTARY = 0x36;
+
+// Rotary Encoder Breakout (product 4991) specific
+constexpr uint8_t ROTARY_ENCODER_NEOPIXEL_PIN = 6;
+constexpr uint8_t ROTARY_ENCODER_BUTTON_PIN = 24;
 
 // NeoKey 1x4 specific
 constexpr uint8_t NEOKEY_1X4_NEOPIXEL_PIN = 3;
