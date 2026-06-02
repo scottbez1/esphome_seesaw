@@ -22,6 +22,7 @@ class SeesawEncoderSensor : public sensor::Sensor, public Component {
  protected:
   SeesawDevice *parent_{nullptr};
   uint8_t encoder_{0};
+  int32_t last_position_{0};
 };
 
 }  // namespace seesaw

@@ -26,7 +26,10 @@ void SeesawEncoderSensor::update_from_parent() {
     ESP_LOGW(TAG, "Failed to read encoder %d position", encoder_);
     return;
   }
-  this->publish_state((float) position);
+  if (position != last_position_) {
+    last_position_ = position;
+    this->publish_state((float) position);
+  }
 }
 
 }  // namespace seesaw
